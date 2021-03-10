@@ -24,7 +24,7 @@ class CurrentFollowing with ChangeNotifier {
       nowFollowing.lon = event.docs[0]['lon'];
       print("${nowFollowing.name} this one");
       try{
-        controller.move(LatLng(nowFollowing.lat, nowFollowing.lon), 10.0);
+        controller.move(LatLng(nowFollowing.lat, nowFollowing.lon), 15.0);
         print("controller empty ");
       } catch(e) {
         // controller.move(LatLng(19.076090

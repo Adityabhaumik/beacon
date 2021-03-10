@@ -42,7 +42,7 @@ class CurrentCarrier with ChangeNotifier {
   }
 
   void startTimer(int hour, MapController c) {
-    int _counter = 10 * hour;
+    int _counter = 3600 * hour;
     Position myCurrentPosition;
     t = Timer.periodic(Duration(seconds: 1), (_) async {
       if (_counter > 0) {
@@ -51,7 +51,7 @@ class CurrentCarrier with ChangeNotifier {
         myCurrentPosition = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high);
         c.move(LatLng(myCurrentPosition.latitude, myCurrentPosition.longitude),
-            10.0);
+            15.0);
         FirebaseFirestore.instance
             .collection('Carriers')
             .doc('${_current.id}')

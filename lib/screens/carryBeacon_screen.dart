@@ -57,9 +57,9 @@ class _CarryBeaconState extends State<CarryBeacon> {
                 SizedBox(height: 16),
                 new GestureDetector(
                   onTap: () {
+                    try{CurrentCarrierData.ClearCarrier();}catch(_){}
 
-                    CurrentCarrierData.ClearCarrier();
-                    return Navigator.of(context).pop(true);
+                     Navigator.of(context).pop(true);
                   },
                   child: Text("YES"),
                 ),
@@ -166,7 +166,7 @@ class _CarryBeaconState extends State<CarryBeacon> {
                           options: MapOptions(
                             center: LatLng(myCurrentPosition.latitude,
                                 myCurrentPosition.longitude),
-                            minZoom: 10.0,
+                            minZoom: 15.0,
                           ),
                           layers: [
                             TileLayerOptions(
