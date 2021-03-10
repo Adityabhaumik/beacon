@@ -45,8 +45,8 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
                 child: FlutterMap(
                   mapController: myMapController,
                   options: MapOptions(
-                    zoom: 30.0,
-                      center: LatLng(12.972442, 77.580643), minZoom: 20.0),
+                    zoom: 15,
+                      center: LatLng(12.972442, 77.580643),),
                   layers: [
                     TileLayerOptions(
                         urlTemplate:
