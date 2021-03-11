@@ -4,7 +4,7 @@ This application is a qualification Task from ccExtractor Development for Gsoc 2
 
 ## What Does It Do?
 
-This app basically allows you to share your location with other people also it uses firebase.
+This app basically allows you to share your location with other people.
 
 A few resources to get you started if this is your first Flutter project:
 
