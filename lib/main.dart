@@ -1,11 +1,9 @@
 import 'package:beacon/screens/currentfollowingBeacon_screen.dart';
 import 'package:flutter/material.dart';
 import './screens/first_screen.dart';
-import './screens/followBeacon_screen.dart';
 import './screens/carryBeacon_screen.dart';
 import './provider/current_carrier_provider.dart';
 import 'package:provider/provider.dart';
-import './provider/carrier_provider.dart';
 import './provider/currentfollowingBeacon_provider.dart';
 
 void main() {
@@ -17,7 +15,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => Carrier()),
         ChangeNotifierProvider(create: (context) => CurrentCarrier()),
         ChangeNotifierProvider(create: (context) => CurrentFollowing()),
       ],
@@ -32,7 +29,6 @@ class MyApp extends StatelessWidget {
         routes: {
           FirstScreen.id: (context) => FirstScreen(),
           CarryBeacon.id: (context) => CarryBeacon(),
-          FollowBeacon.id: (context) => FollowBeacon(),
           CurrentfollowingBeacon.id: (context) => CurrentfollowingBeacon(),
         },
       ),

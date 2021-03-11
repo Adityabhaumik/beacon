@@ -57,9 +57,11 @@ class _CarryBeaconState extends State<CarryBeacon> {
                 SizedBox(height: 16),
                 new GestureDetector(
                   onTap: () {
-                    try{CurrentCarrierData.ClearCarrier();}catch(_){}
+                    try {
+                      CurrentCarrierData.ClearCarrier();
+                    } catch (_) {}
 
-                     Navigator.of(context).pop(true);
+                    Navigator.of(context).pop(true);
                   },
                   child: Text("YES"),
                 ),
@@ -113,7 +115,8 @@ class _CarryBeaconState extends State<CarryBeacon> {
                     ),
                   ),
                 ),
-              ),Expanded(
+              ),
+              Expanded(
                 flex: 2,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,12 +131,14 @@ class _CarryBeaconState extends State<CarryBeacon> {
                     ),
                     MenuButton<int>(
                       child: Icon(Icons.arrow_drop_down),
-                      items:[1,2,3,4],
+                      items: [1, 2, 3, 4],
                       itemBuilder: (int value) => Container(
                         height: 40,
                         alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                        margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 2, horizontal: 4),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 2, horizontal: 4),
                         child: Text("${value}"),
                       ),
                       toggledChild: Container(
@@ -149,7 +154,6 @@ class _CarryBeaconState extends State<CarryBeacon> {
                         print(isToggle);
                       },
                     )
-
                   ],
                 ),
               ),
@@ -204,10 +208,13 @@ class _CarryBeaconState extends State<CarryBeacon> {
                   ),
                 );
               } else {
-
-                myBottomSheetCarrierScreen(context, CarryNameController.text,
-                    myCurrentPosition.latitude, myCurrentPosition.longitude,MyMapController,dropdownValue);
-
+                myBottomSheetCarrierScreen(
+                    context,
+                    CarryNameController.text,
+                    myCurrentPosition.latitude,
+                    myCurrentPosition.longitude,
+                    MyMapController,
+                    dropdownValue);
               }
             },
             child: Icon(

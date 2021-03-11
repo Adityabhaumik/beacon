@@ -5,7 +5,12 @@ import '../provider/current_carrier_provider.dart';
 import '../utilities/alertBoxCarrier.dart';
 
 Future<void> myBottomSheetCarrierScreen(
-    BuildContext context, String currentCarrier, double lat, double lon,MapController controller,int time) {
+    BuildContext context,
+    String currentCarrier,
+    double lat,
+    double lon,
+    MapController controller,
+    int time) {
   return showModalBottomSheet<void>(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -40,27 +45,33 @@ Future<void> myBottomSheetCarrierScreen(
               'Your Longitude :${lon}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
-            CurrentCarrierData.isCarryingNow? ElevatedButton(
-                style: ButtonStyle(
-                    elevation: MaterialStateProperty.all<double>(0.0)),
-                onPressed: () {
-                  CurrentCarrierData.ClearCarrier();
-                  alertBoxCarrier(context,"You Have Stoped Carrying the Beacon","");
-                },
-                child:Text(
-                  "Stop Carrying The Beacon",
-                )):ElevatedButton(
-                style: ButtonStyle(
-                    elevation: MaterialStateProperty.all<double>(0.0)),
-                onPressed: () {
-                  CurrentCarrierData.updateCarrier(currentCarrier);
-                  print("yaha tak hua");
-                  CurrentCarrierData.startTimer(time,controller);
-                  alertBoxCarrier(context,"You Have Started Carrying the Beacon","Ask your Friends To Enter Your Id to Follow");
-                },
-                child:Text(
-                  "Start Carrying The Beacon",
-                ))
+            CurrentCarrierData.isCarryingNow
+                ? ElevatedButton(
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all<double>(0.0)),
+                    onPressed: () {
+                      CurrentCarrierData.ClearCarrier();
+                      alertBoxCarrier(
+                          context, "You Have Stoped Carrying the Beacon", "");
+                    },
+                    child: Text(
+                      "Stop Carrying The Beacon",
+                    ))
+                : ElevatedButton(
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all<double>(0.0)),
+                    onPressed: () {
+                      CurrentCarrierData.updateCarrier(currentCarrier);
+                      print("yaha tak hua");
+                      CurrentCarrierData.startTimer(time, controller);
+                      alertBoxCarrier(
+                          context,
+                          "You Have Started Carrying the Beacon",
+                          "Ask your Friends To Enter Your Id to Follow");
+                    },
+                    child: Text(
+                      "Start Carrying The Beacon",
+                    ))
           ],
         ),
       );

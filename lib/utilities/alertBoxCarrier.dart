@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Future<void> alertBoxCarrier(context,String message1,String message2) async {
+Future<void> alertBoxCarrier(context, String message1, String message2) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

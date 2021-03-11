@@ -1,9 +1,8 @@
-import 'package:beacon/screens/followBeacon_screen.dart';
 import '../utilities/alertBox_utility.dart';
 import './carryBeacon_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'package:firebase_core/firebase_core.dart';
+
 class FirstScreen extends StatefulWidget {
   static const id = "FirstScreen";
 
@@ -18,9 +17,11 @@ class _FirstScreenState extends State<FirstScreen> {
 
     super.initState();
   }
-  void initializeFirebase()async{
+
+  void initializeFirebase() async {
     await Firebase.initializeApp();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,7 +50,7 @@ class _FirstScreenState extends State<FirstScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  AlertBox(context,1);
+                  AlertBox(context, 1);
                   // Navigator.pushNamed(context, FollowBeacon.id);
                 },
                 child: Text(

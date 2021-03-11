@@ -46,6 +46,8 @@ class CurrentCarrier with ChangeNotifier {
     Position myCurrentPosition;
     t = Timer.periodic(Duration(seconds: 1), (_) async {
       if (_counter > 0) {
+        ///Todo this (_counter=_counter-300) and change seconds 1 to 300;
+        //
         _counter--;
         print(_counter);
         myCurrentPosition = await Geolocator.getCurrentPosition(
@@ -60,7 +62,7 @@ class CurrentCarrier with ChangeNotifier {
           'name': _current.name,
           'lat': myCurrentPosition.latitude,
           'lon': myCurrentPosition.longitude,
-          'createdAt':DateTime.now()
+          'createdAt': DateTime.now()
         });
         print("${myCurrentPosition.latitude}I working");
       } else {

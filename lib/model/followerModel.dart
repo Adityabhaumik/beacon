@@ -1,5 +1,3 @@
-import 'package:provider/provider.dart';
-
 class followerDataModel {
   String name;
   double lat;

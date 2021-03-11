@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../screens/currentfollowingBeacon_screen.dart';
-import '../provider/currentfollowingBeacon_provider.dart';
-import 'package:provider/provider.dart';
 
 Future<void> AlertBox(BuildContext context, int index) {
   TextEditingController controller = TextEditingController();
@@ -41,8 +39,8 @@ Future<void> AlertBox(BuildContext context, int index) {
               print(controller.text);
               // controller.text="";
               Navigator.of(context).pop();
-
-              Navigator.pushNamed(context,CurrentfollowingBeacon.id,arguments: controller.text);
+              Navigator.pushNamed(context, CurrentfollowingBeacon.id,
+                  arguments: controller.text);
             },
           ),
         ],

@@ -1,4 +1,3 @@
-
 class CurrentCarrierDataModel {
   String name;
   String id;
