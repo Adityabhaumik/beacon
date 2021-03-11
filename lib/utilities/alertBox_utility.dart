@@ -22,7 +22,7 @@ Future<void> AlertBox(BuildContext context, int index) {
                     color: Colors.black,
                   ),
                   decoration: InputDecoration(
-                    labelText: "Password",
+                    labelText: "Pass Key",
                     labelStyle: TextStyle(color: Colors.black, fontSize: 15),
                     focusColor: Colors.black,
                     hintStyle: TextStyle(color: Colors.black, fontSize: 15),
@@ -33,8 +33,10 @@ Future<void> AlertBox(BuildContext context, int index) {
           ),
         ),
         actions: <Widget>[
-          TextButton(
-            child: Text('Submit'),
+          ElevatedButton(
+            style: ButtonStyle(
+                elevation: MaterialStateProperty.all<double>(0.0)),
+            child: Text('Submit',style: TextStyle(color: Colors.white),),
             onPressed: () {
               print(controller.text);
               // controller.text="";

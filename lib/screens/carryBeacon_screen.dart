@@ -90,10 +90,11 @@ class _CarryBeaconState extends State<CarryBeacon> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: TextFormField(
+                    readOnly:isCarrying,
                     controller: CarryNameController,
                     cursorColor: Colors.white,
                     style: TextStyle(
@@ -129,30 +130,33 @@ class _CarryBeaconState extends State<CarryBeacon> {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    MenuButton<int>(
-                      child: Icon(Icons.arrow_drop_down),
-                      items: [1, 2, 3, 4],
-                      itemBuilder: (int value) => Container(
-                        height: 40,
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 2, horizontal: 4),
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 2, horizontal: 4),
-                        child: Text("${value}"),
-                      ),
-                      toggledChild: Container(
+                    Container(
+                      width: (MediaQuery.of(context).size.width) * 0.3,
+                      child: MenuButton<int>(
                         child: Icon(Icons.arrow_drop_down),
+                        items: [1, 2, 3, 4],
+                        itemBuilder: (int value) => Container(
+                          height: 40,
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 4),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 4),
+                          child: Text("${value}  hour"),
+                        ),
+                        toggledChild: Container(
+                          child: Icon(Icons.arrow_drop_down),
+                        ),
+                        onItemSelected: (int value) {
+                          setState(() {
+                            dropdownValue = value;
+                            print(dropdownValue);
+                          });
+                        },
+                        onMenuButtonToggle: (bool isToggle) {
+                          print(isToggle);
+                        },
                       ),
-                      onItemSelected: (int value) {
-                        setState(() {
-                          dropdownValue = value;
-                          print(dropdownValue);
-                        });
-                      },
-                      onMenuButtonToggle: (bool isToggle) {
-                        print(isToggle);
-                      },
                     )
                   ],
                 ),

@@ -24,45 +24,58 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-      margin: EdgeInsets.all(20),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, CarryBeacon.id);
-                },
-                child: Text(
-                  "Carry The Beacon",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+        margin: EdgeInsets.all(20),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Gretel',
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+              Expanded(
+                flex: 3,
+                child: Image(
+                  image: AssetImage('assets/backimg1.png'),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, CarryBeacon.id);
+                  },
+                  child: Text(
+                    "Carry The Beacon",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Container(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  AlertBox(context, 1);
-                  // Navigator.pushNamed(context, FollowBeacon.id);
-                },
-                child: Text(
-                  "Follow The Beacon",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
+              Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    AlertBox(context, 1);
+                    // Navigator.pushNamed(context, FollowBeacon.id);
+                  },
+                  child: Text(
+                    "Follow The Beacon",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:provider/provider.dart';
 import '../provider/current_carrier_provider.dart';
 import '../utilities/alertBoxCarrier.dart';
+import 'package:clipboard/clipboard.dart';
 
 Future<void> myBottomSheetCarrierScreen(
     BuildContext context,
@@ -29,9 +30,28 @@ Future<void> myBottomSheetCarrierScreen(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              'Your id :${CurrentCarrierNameId.id}',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CurrentCarrierData.isCarryingNow
+                    ? Text(
+                        'Your id :${CurrentCarrierNameId.id}',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      )
+                    : Text(
+                        'Currently Not Carrying',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                CurrentCarrierData.isCarryingNow
+                    ? IconButton(
+                        icon: Icon(Icons.copy),
+                        onPressed: () {
+                          FlutterClipboard.copy("${CurrentCarrierNameId.name} is carring the beacon. His ID : ${CurrentCarrierNameId.id}");
+                        })
+                    : Container()
+              ],
             ),
             Text(
               'Your Name :${currentCarrier}',
@@ -48,6 +68,7 @@ Future<void> myBottomSheetCarrierScreen(
             CurrentCarrierData.isCarryingNow
                 ? ElevatedButton(
                     style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),
                         elevation: MaterialStateProperty.all<double>(0.0)),
                     onPressed: () {
                       CurrentCarrierData.ClearCarrier();
@@ -59,6 +80,7 @@ Future<void> myBottomSheetCarrierScreen(
                     ))
                 : ElevatedButton(
                     style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),
                         elevation: MaterialStateProperty.all<double>(0.0)),
                     onPressed: () {
                       CurrentCarrierData.updateCarrier(currentCarrier);
