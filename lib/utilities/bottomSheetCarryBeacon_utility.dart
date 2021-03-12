@@ -48,7 +48,7 @@ Future<void> myBottomSheetCarrierScreen(
                     ? IconButton(
                         icon: Icon(Icons.copy),
                         onPressed: () {
-                          FlutterClipboard.copy("${CurrentCarrierNameId.name} is carring the beacon. His ID : ${CurrentCarrierNameId.id}");
+                          FlutterClipboard.copy("${CurrentCarrierNameId.id}");
                         })
                     : Container()
               ],

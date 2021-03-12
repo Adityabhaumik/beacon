@@ -44,9 +44,9 @@ class CurrentCarrier with ChangeNotifier {
   void startTimer(int hour, MapController c) {
     int _counter = 3600 * hour;
     Position myCurrentPosition;
-    t = Timer.periodic(Duration(seconds: 300), (_) async {
+    t = Timer.periodic(Duration(seconds: 60), (_) async {
       if (_counter > 0) {
-        _counter = _counter - 300;
+        _counter = _counter - 60;
         print(_counter);
         myCurrentPosition = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high);

@@ -20,7 +20,7 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
     MarkerLayerOptions mymarkers = MarkerLayerOptions(
       markers: [
         Marker(
-          point: LatLng(12.972442, 77.580643),
+          point: LatLng(90.0000, 135.0000),
           builder: (context) {
             return Icon(
               Icons.location_pin,
@@ -57,7 +57,7 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
                   mapController: myMapController,
                   options: MapOptions(
                     zoom: 15,
-                    center: LatLng(12.972442, 77.580643),
+                    center: LatLng(90.0000, 135.0000),
                   ),
                   layers: [
                     TileLayerOptions(

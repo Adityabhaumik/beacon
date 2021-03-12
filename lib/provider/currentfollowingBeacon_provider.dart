@@ -15,6 +15,11 @@ class CurrentFollowing with ChangeNotifier {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .listen((event) {
+      if (event.docs.isEmpty) {
+        nowFollowing.name ='Error May be Wrong Code';
+        nowFollowing.lat = 90.0000;
+        nowFollowing.lon =135.0000;
+      }
       nowFollowing.name = event.docs[0]['name'];
       nowFollowing.lat = event.docs[0]['lat'];
       nowFollowing.lon = event.docs[0]['lon'];
@@ -23,7 +28,7 @@ class CurrentFollowing with ChangeNotifier {
         controller.move(LatLng(nowFollowing.lat, nowFollowing.lon), 15.0);
         mymarker.markers[0].point.longitude = nowFollowing.lon;
         mymarker.markers[0].point.latitude = nowFollowing.lat;
-       // print(mymarker.markers[0].point.longitude);
+        // print(mymarker.markers[0].point.longitude);
       } catch (e) {}
     });
     notifyListeners();
