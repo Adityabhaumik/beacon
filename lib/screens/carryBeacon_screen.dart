@@ -46,9 +46,14 @@ class _CarryBeaconState extends State<CarryBeacon> {
       return showDialog(
             context: context,
             builder: (context) => new AlertDialog(
-              title: new Text('Are you sure?'),
-              content:
-                  new Text('By Going Back You Will STOP Carrying The Beacon'),
+              title: new Text(
+                'Are you sure?',
+                style: Theme.of(context).textTheme.headline2,
+              ),
+              content: new Text(
+                'By Going Back You Will STOP Carrying The Beacon',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
               actions: <Widget>[
                 new GestureDetector(
                   onTap: () => Navigator.of(context).pop(false),
@@ -77,15 +82,13 @@ class _CarryBeaconState extends State<CarryBeacon> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.white),
-            backgroundColor: Colors.black,
             elevation: 0,
             title: Text(
               "CarryBeacon",
-              style: TextStyle(color: Colors.white),
+              style: Theme.of(context).textTheme.headline2,
             ),
           ),
-          backgroundColor: Colors.black,
+          backgroundColor: Theme.of(context).primaryColor,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -94,25 +97,25 @@ class _CarryBeaconState extends State<CarryBeacon> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: TextFormField(
-                    readOnly:isCarrying,
+                    readOnly: isCarrying,
                     controller: CarryNameController,
-                    cursorColor: Colors.white,
+                    cursorColor: Theme.of(context).secondaryHeaderColor,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).secondaryHeaderColor,
                     ),
                     decoration: InputDecoration(
-                      fillColor: Colors.black26,
+                      fillColor: Theme.of(context).primaryColor,
                       filled: true,
                       labelText: "Enter Name",
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+                      labelStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor, fontSize: 15),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                            const BorderSide(color: Colors.white, width: 2.0),
+                             BorderSide(color: Theme.of(context).secondaryHeaderColor, width: 2.0),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      focusColor: Colors.white,
+                      focusColor: Theme.of(context).primaryColor,
                       hintText: 'Enter Name',
-                      hintStyle: TextStyle(color: Colors.white, fontSize: 15),
+                      hintStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor, fontSize: 15),
                     ),
                   ),
                 ),
@@ -127,13 +130,16 @@ class _CarryBeaconState extends State<CarryBeacon> {
                       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
                       child: Text(
                         "Hours :       ${dropdownValue}",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
                       ),
                     ),
                     Container(
                       width: (MediaQuery.of(context).size.width) * 0.3,
                       child: MenuButton<int>(
-                        child: Icon(Icons.arrow_drop_down),
+                        child: Icon(
+                          Icons.arrow_drop_down,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                         items: [1, 2, 3, 4],
                         itemBuilder: (int value) => Container(
                           height: 40,
@@ -142,10 +148,14 @@ class _CarryBeaconState extends State<CarryBeacon> {
                               vertical: 2, horizontal: 4),
                           margin: const EdgeInsets.symmetric(
                               vertical: 2, horizontal: 4),
-                          child: Text("${value}  hour"),
+                          child: Text(
+                            "${value}  hour",
+                            style: Theme.of(context).textTheme.caption,
+                          ),
                         ),
                         toggledChild: Container(
-                          child: Icon(Icons.arrow_drop_down),
+                          child: Icon(Icons.arrow_drop_up,
+                              color: Theme.of(context).colorScheme.primary),
                         ),
                         onItemSelected: (int value) {
                           setState(() {
@@ -208,7 +218,11 @@ class _CarryBeaconState extends State<CarryBeacon> {
               if (CarryNameController.text == "") {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Enter Name To Start Carrying the Beacon'),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    content: Text(
+                      'Enter Name To Start Carrying the Beacon',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
                   ),
                 );
               } else {

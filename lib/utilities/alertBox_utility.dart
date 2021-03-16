@@ -8,7 +8,7 @@ Future<void> AlertBox(BuildContext context, int index) {
     barrierDismissible: true, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Enter Id of Beacon Carrier'),
+        title: Text('Enter Id of Beacon Carrier',style:Theme.of(context).textTheme.headline2),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
@@ -18,14 +18,12 @@ Future<void> AlertBox(BuildContext context, int index) {
                 child: TextFormField(
                   controller: controller,
                   cursorColor: Colors.black,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
+                  style:Theme.of(context).textTheme.subtitle2,
                   decoration: InputDecoration(
                     labelText: "Pass Key",
-                    labelStyle: TextStyle(color: Colors.black, fontSize: 15),
+                    labelStyle: Theme.of(context).textTheme.subtitle2,
                     focusColor: Colors.black,
-                    hintStyle: TextStyle(color: Colors.black, fontSize: 15),
+
                   ),
                 ),
               ),

@@ -1,3 +1,5 @@
+import 'package:beacon/provider/darkModeNotifier.dart';
+import 'package:provider/provider.dart';
 import '../utilities/alertBox_utility.dart';
 import './carryBeacon_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +26,16 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isNowDark = Provider.of<DarkNotifier>(context);
     return Scaffold(
-      backgroundColor: Colors.black,
+      appBar: AppBar(
+        elevation: 0.0,
+        actions: [
+        IconButton(icon:isNowDark.isDark?Icon(Icons.wb_sunny):Icon(Icons.nights_stay), onPressed: (){
+          isNowDark.saveWetherDark(!isNowDark.isDark);
+        })
+      ],),
+      backgroundColor: Theme.of(context).primaryColor,
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
         margin: EdgeInsets.all(20),
@@ -35,12 +45,12 @@ class _FirstScreenState extends State<FirstScreen> {
             children: [
               Text(
                 'Gretel',
-                style: TextStyle(color: Colors.white, fontSize: 25),
+                style: Theme.of(context).textTheme.headline2,
               ),
               Expanded(
                 flex: 3,
                 child: Image(
-                  image: AssetImage('assets/backimg1.png'),
+                  image: isNowDark.isDark?AssetImage('assets/backimg1.png'):AssetImage('assets/backimg_white.png'),
                 ),
               ),
               Container(

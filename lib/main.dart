@@ -5,33 +5,34 @@ import './screens/carryBeacon_screen.dart';
 import './provider/current_carrier_provider.dart';
 import 'package:provider/provider.dart';
 import './provider/currentfollowingBeacon_provider.dart';
+import './provider/darkModeNotifier.dart';
+import 'Mythemes.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CurrentCarrier()),
+        ChangeNotifierProvider(create: (context) => CurrentFollowing()),
+        ChangeNotifierProvider(create: (context) => DarkNotifier()),
+      ],
+      child: MyApp()),);
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => CurrentCarrier()),
-        ChangeNotifierProvider(create: (context) => CurrentFollowing()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primaryColor: Colors.white,
-          primarySwatch: Colors.orange,
-        ),
-        home: FirstScreen(),
-        routes: {
-          FirstScreen.id: (context) => FirstScreen(),
-          CarryBeacon.id: (context) => CarryBeacon(),
-          CurrentfollowingBeacon.id: (context) => CurrentfollowingBeacon(),
-        },
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: Provider
+          .of<DarkNotifier>(context)
+          .isDark ? darkTheme : liteTheme,
+      home: FirstScreen(),
+      routes: {
+        FirstScreen.id: (context) => FirstScreen(),
+        CarryBeacon.id: (context) => CarryBeacon(),
+        CurrentfollowingBeacon.id: (context) => CurrentfollowingBeacon(),
+      },
     );
   }
 }

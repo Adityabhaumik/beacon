@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../utilities/bottomSheet_utility.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:provider/provider.dart';
 import '../provider/currentfollowingBeacon_provider.dart';
+
 
 class CurrentfollowingBeacon extends StatefulWidget {
   static const id = "CurrentfollowingBeacon";
@@ -17,23 +19,22 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
   @override
   Widget build(BuildContext context) {
     MapController myMapController = MapController();
-    MarkerLayerOptions mymarkers = MarkerLayerOptions(
+    MarkerLayerOptions mymarkers=  MarkerLayerOptions(
       markers: [
         Marker(
+          anchorPos: AnchorPos.align(AnchorAlign.center),
+          height: 30,
+          width: 30,
           point: LatLng(90.0000, 135.0000),
-          builder: (context) {
-            return Icon(
-              Icons.location_pin,
-              color: Colors.orange,
-            );
-          },
+          builder: (ctx) => Icon(Icons.location_pin,
+              color: Colors.orangeAccent),
         ),
       ],
     );
 
     final current = ModalRoute.of(context).settings.arguments as String;
     final currentCarrierData = Provider.of<CurrentFollowing>(context);
-    currentCarrierData.update(current, myMapController, mymarkers);
+    currentCarrierData.update(current, myMapController,mymarkers);
 
     return Scaffold(
       backgroundColor: Colors.black,
