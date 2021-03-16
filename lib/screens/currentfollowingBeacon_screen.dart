@@ -7,7 +7,6 @@ import 'package:latlong/latlong.dart';
 import 'package:provider/provider.dart';
 import '../provider/currentfollowingBeacon_provider.dart';
 
-
 class CurrentfollowingBeacon extends StatefulWidget {
   static const id = "CurrentfollowingBeacon";
 
@@ -19,22 +18,41 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
   @override
   Widget build(BuildContext context) {
     MapController myMapController = MapController();
-    MarkerLayerOptions mymarkers=  MarkerLayerOptions(
-      markers: [
+    List<Marker> mymarkers = [
+      Marker(
+        anchorPos: AnchorPos.align(AnchorAlign.center),
+        height: 30,
+        width: 30,
+        point: LatLng(90.0000, 135.0000),
+        builder: (ctx) => Icon(Icons.location_pin, color: Colors.orangeAccent),
+      ),
+    ];
+    final current = ModalRoute.of(context).settings.arguments as String;
+    final currentCarrierData = Provider.of<CurrentFollowing>(context);
+    currentCarrierData.update(
+      current,
+      myMapController,
+    );
+
+    addMarker(double lat, double lon) {
+      mymarkers.add(
         Marker(
           anchorPos: AnchorPos.align(AnchorAlign.center),
           height: 30,
           width: 30,
-          point: LatLng(90.0000, 135.0000),
-          builder: (ctx) => Icon(Icons.location_pin,
-              color: Colors.orangeAccent),
+          point: LatLng(lat, lon),
+          builder: (ctx) =>
+              Icon(Icons.location_pin, color: Colors.orangeAccent),
         ),
-      ],
-    );
+      );
+    }
 
-    final current = ModalRoute.of(context).settings.arguments as String;
-    final currentCarrierData = Provider.of<CurrentFollowing>(context);
-    currentCarrierData.update(current, myMapController,mymarkers);
+    setState(() {
+      try {
+        addMarker(currentCarrierData.nowFollowing.lat,
+            currentCarrierData.nowFollowing.lon);
+      } catch (_) {}
+    });
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -65,7 +83,7 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
                         urlTemplate:
                             "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                         subdomains: ['a', 'b', 'c']),
-                    mymarkers
+                    MarkerLayerOptions(markers: mymarkers)
                   ],
                 ),
               ),

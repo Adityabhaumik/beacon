@@ -8,7 +8,7 @@ import '../model/followerModel.dart';
 class CurrentFollowing with ChangeNotifier {
   followerDataModel nowFollowing = followerDataModel();
 
-  void update(String current, MapController controller,MarkerLayerOptions mymarker) {
+  void update(String current, MapController controller) {
     FirebaseFirestore.instance
         .collection('Carriers/${current}/loc')
         .orderBy('createdAt', descending: true)
@@ -25,13 +25,13 @@ class CurrentFollowing with ChangeNotifier {
       print("${nowFollowing.name} this one");
       try {
         controller.move(LatLng(nowFollowing.lat, nowFollowing.lon), 15.0);
-        mymarker.markers.first.point.latitude = nowFollowing.lat;
-        mymarker.markers.first.point.longitude = nowFollowing.lon;
 
+        // mymarker.markers.first.point.latitude = nowFollowing.lat;
+        // mymarker.markers.first.point.longitude = nowFollowing.lon;
+        notifyListeners();
 
         // print(mymarker.markers[0].point.longitude);
       } catch (e) {}
     });
-    notifyListeners();
   }
 }
