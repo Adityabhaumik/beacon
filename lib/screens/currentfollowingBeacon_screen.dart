@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:latlong/latlong.dart';
+import 'package:geolocator/geolocator.dart';
 import '../utilities/bottomSheet_utility.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -17,6 +19,7 @@ class CurrentfollowingBeacon extends StatefulWidget {
 class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
   @override
   Widget build(BuildContext context) {
+
     MapController myMapController = MapController();
     List<Marker> mymarkers = [
       Marker(
@@ -29,12 +32,13 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
     ];
     final current = ModalRoute.of(context).settings.arguments as String;
     final currentCarrierData = Provider.of<CurrentFollowing>(context);
+    Position myCurrentPosition = null;
     currentCarrierData.update(
       current,
       myMapController,
     );
 
-    addMarker(double lat, double lon) {
+    addMarker(double lat, double lon,Color iconColor) {
       mymarkers.add(
         Marker(
           anchorPos: AnchorPos.align(AnchorAlign.center),
@@ -42,15 +46,23 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
           width: 30,
           point: LatLng(lat, lon),
           builder: (ctx) =>
-              Icon(Icons.location_pin, color: Colors.orangeAccent),
+              Icon(Icons.location_pin, color: iconColor),
         ),
       );
     }
-
+    void getLocation() async {
+      myCurrentPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        ///Todo make my position visible and destination
+        addMarker(myCurrentPosition.latitude,myCurrentPosition.longitude,Colors.orangeAccent);
+      });
+    }
     setState(() {
       try {
+
         addMarker(currentCarrierData.nowFollowing.lat,
-            currentCarrierData.nowFollowing.lon);
+            currentCarrierData.nowFollowing.lon,Colors.cyan);
       } catch (_) {}
     });
 
@@ -58,12 +70,15 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
-          "Current following beacon ",
+          "Following beacon ",
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),
         elevation: 0,
         backgroundColor: Colors.black,
+        actions: [
+          IconButton(icon: Icon(Icons.my_location_outlined), onPressed: () {getLocation();})
+        ],
       ),
       body: Center(
         child: Column(

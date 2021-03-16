@@ -150,7 +150,7 @@ class _CarryBeaconState extends State<CarryBeacon> {
                               vertical: 2, horizontal: 4),
                           child: Text(
                             "${value}  hour",
-                            style: Theme.of(context).textTheme.caption,
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                         toggledChild: Container(
