@@ -7,20 +7,32 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../model/destination_model.dart';
 
 class CurrentCarrier with ChangeNotifier {
   CurrentCarrierDataModel _current = CurrentCarrierDataModel();
+  DestinationDataModel _currentDestination = DestinationDataModel();
   bool isCarrying = false;
   Timer t;
 
   CurrentCarrierDataModel get current_carriers {
     return _current;
   }
+  DestinationDataModel get destinationData {
+    return _currentDestination;
+  }
 
   bool get isCarryingNow {
     return isCarrying;
   }
 
+  void updateDestination(String newDestinationName,double lat,double lon){
+    _currentDestination.destinationName=newDestinationName;
+    _currentDestination.lat=lat;
+    _currentDestination.lon=lon;
+    notifyListeners();
+
+  }
   void ClearCarrier() {
     _current.name = "";
     _current.id = "";
@@ -44,6 +56,15 @@ class CurrentCarrier with ChangeNotifier {
   void startTimer(int hour, MapController c) {
     int _counter = 3600 * hour;
     Position myCurrentPosition;
+    FirebaseFirestore.instance
+        .collection('Carriers')
+        .doc('${_current.id}')
+        .collection('destination')
+        .add({
+      'destinationName': _currentDestination.destinationName,
+      'destLat': _currentDestination.lat,
+      'destLon': _currentDestination.lon
+    });
     t = Timer.periodic(Duration(seconds: 60), (_) async {
       if (_counter > 0) {
         _counter = _counter - 60;

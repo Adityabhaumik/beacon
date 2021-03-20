@@ -35,6 +35,8 @@ dependencies:
   menu_button: ^1.4.1
   clipboard: ^0.1.3
   shared_preferences: ^2.0.4
+  material_floating_search_bar: ^0.3.3
+  geocoder: ^0.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

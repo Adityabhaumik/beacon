@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong/latlong.dart';
 
-Future<void> myBottomSheet(BuildContext context, String currentCarrier, double lat,double lon) {
+Future<void> myBottomSheet(
+    BuildContext context,
+    String currentCarrier,
+    double lat,
+    double lon,
+    String destination,
+    double destinationLat,
+    double destinationLon,
+) {
   return showModalBottomSheet<void>(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -17,6 +27,20 @@ Future<void> myBottomSheet(BuildContext context, String currentCarrier, double l
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+
+                Text(
+                  'Destination :${destination}',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+
+            Text(
+              'Destination Lattitude :${destinationLat}',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Destination Longitude :${destinationLon}',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
             Text(
               'Beacon Carrier :${currentCarrier}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),

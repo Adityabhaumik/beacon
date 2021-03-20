@@ -7,6 +7,7 @@ import '../utilities/bottomSheetCarryBeacon_utility.dart';
 import '../provider/current_carrier_provider.dart';
 import 'dart:async';
 import 'package:menu_button/menu_button.dart';
+import '../utilities/enterDestinationbar_utility.dart';
 
 class CarryBeacon extends StatefulWidget {
   static const id = "CarryBeacon";
@@ -20,15 +21,34 @@ class _CarryBeaconState extends State<CarryBeacon> {
   int dropdownValue = 1;
   bool positionLoaded = false;
   Position myCurrentPosition = null;
-  TextEditingController CarryNameController = TextEditingController();
+  Position DestinationPosition = null;
+  TextEditingController controller = TextEditingController();
   MapController MyMapController = MapController();
 
   void getLocation() async {
     myCurrentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+    updateMarkers(myCurrentPosition.latitude, myCurrentPosition.longitude,
+        Colors.orangeAccent);
     setState(() {
       positionLoaded = true;
     });
+  }
+
+  List<Marker> mymarkers = [];
+
+  updateMarkers(double lat, double lon, Color color) {
+    mymarkers.add(
+      Marker(
+        point: LatLng(lat, lon),
+        builder: (context) {
+          return Icon(
+            Icons.location_pin,
+            color: color,
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -37,10 +57,19 @@ class _CarryBeaconState extends State<CarryBeacon> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     final CurrentCarrierData = Provider.of<CurrentCarrier>(context);
     final CurrentCarrierNameId = CurrentCarrierData.current_carriers;
+    final Destinationdata = CurrentCarrierData.destinationData;
+
+    setState(() {
+      try{
+        updateMarkers(Destinationdata.lat, Destinationdata.lon, Colors.greenAccent);
+      }catch(e){}
+
+    });
 
     Future<bool> alertBoxOnWillPopCarrier() {
       return showDialog(
@@ -81,164 +110,139 @@ class _CarryBeaconState extends State<CarryBeacon> {
       child: SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            elevation: 0,
-            title: Text(
-              "CarryBeacon",
-              style: Theme.of(context).textTheme.headline2,
-            ),
-          ),
           backgroundColor: Theme.of(context).primaryColor,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          body: Stack(
+            fit: StackFit.expand,
             children: [
-              Expanded(
-                flex: 2,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  child: TextFormField(
-                    readOnly: isCarrying,
-                    controller: CarryNameController,
-                    cursorColor: Theme.of(context).secondaryHeaderColor,
-                    style: TextStyle(
-                      color: Theme.of(context).secondaryHeaderColor,
-                    ),
-                    decoration: InputDecoration(
-                      fillColor: Theme.of(context).primaryColor,
-                      filled: true,
-                      labelText: "Enter Name",
-                      labelStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor, fontSize: 15),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                             BorderSide(color: Theme.of(context).secondaryHeaderColor, width: 2.0),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      focusColor: Theme.of(context).primaryColor,
-                      hintText: 'Enter Name',
-                      hintStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor, fontSize: 15),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+                          child: Text(
+                            "Hours :       ${dropdownValue}",
+                            style: TextStyle(
+                                color: Theme.of(context).secondaryHeaderColor),
+                          ),
+                        ),
+                        Container(
+                          width: (MediaQuery.of(context).size.width) * 0.3,
+                          child: MenuButton<int>(
+                            child: Icon(
+                              Icons.arrow_drop_down,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            items: [1, 2, 3, 4],
+                            itemBuilder: (int value) => Container(
+                              height: 40,
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 4),
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 4),
+                              child: Text(
+                                "${value}  hour",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                            toggledChild: Container(
+                              child: Icon(Icons.arrow_drop_up,
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                            onItemSelected: (int value) {
+                              setState(() {
+                                dropdownValue = value;
+                                print(dropdownValue);
+                              });
+                            },
+                            onMenuButtonToggle: (bool isToggle) {
+                              print(isToggle);
+                            },
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 2),
-                      child: Text(
-                        "Hours :       ${dropdownValue}",
-                        style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width) * 0.3,
-                      child: MenuButton<int>(
-                        child: Icon(
-                          Icons.arrow_drop_down,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        items: [1, 2, 3, 4],
-                        itemBuilder: (int value) => Container(
-                          height: 40,
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 4),
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 4),
-                          child: Text(
-                            "${value}  hour",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                        toggledChild: Container(
-                          child: Icon(Icons.arrow_drop_up,
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                        onItemSelected: (int value) {
-                          setState(() {
-                            dropdownValue = value;
-                            print(dropdownValue);
-                          });
-                        },
-                        onMenuButtonToggle: (bool isToggle) {
-                          print(isToggle);
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              positionLoaded == false
-                  ? Expanded(
-                      flex: 9,
-                      child: Center(child: CircularProgressIndicator()))
-                  : Expanded(
-                      flex: 9,
-                      child: Container(
-                        color: Colors.red,
-                        child: FlutterMap(
-                          mapController: MyMapController,
-                          options: MapOptions(
-                            center: LatLng(myCurrentPosition.latitude,
-                                myCurrentPosition.longitude),
-                            minZoom: 15.0,
-                          ),
-                          layers: [
-                            TileLayerOptions(
-                              urlTemplate:
-                                  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                              subdomains: ['a', 'b', 'c'],
-                            ),
-                            MarkerLayerOptions(
-                              markers: [
-                                Marker(
-                                  point: LatLng(myCurrentPosition.latitude,
-                                      myCurrentPosition.longitude),
-                                  builder: (context) {
-                                    return Icon(
-                                      Icons.location_pin,
-                                      color: Colors.orange,
-                                    );
-                                  },
+                  positionLoaded == false
+                      ? Expanded(
+                          flex: 9,
+                          child: Center(child: CircularProgressIndicator()))
+                      : Expanded(
+                          flex: 9,
+                          child: Container(
+                            color: Colors.red,
+                            child: FlutterMap(
+                              mapController: MyMapController,
+                              options: MapOptions(
+                                center: LatLng(myCurrentPosition.latitude,
+                                    myCurrentPosition.longitude),
+                                minZoom: 15.0,
+                              ),
+                              layers: [
+                                TileLayerOptions(
+                                  urlTemplate:
+                                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                  subdomains: ['a', 'b', 'c'],
                                 ),
+                                MarkerLayerOptions(markers: mymarkers)
                               ],
-                            )
-                          ],
-                        ),
-                      ))
+                            ),
+                          ))
+                ],
+              ),
+              buildFloatingSearchBar(context,MyMapController)
             ],
           ),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              if (CarryNameController.text == "") {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    content: Text(
-                      'Enter Name To Start Carrying the Beacon',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                  ),
-                );
-              } else {
-                myBottomSheetCarrierScreen(
-                    context,
-                    CarryNameController.text,
-                    myCurrentPosition.latitude,
-                    myCurrentPosition.longitude,
-                    MyMapController,
-                    dropdownValue);
-              }
-            },
-            child: Icon(
-              Icons.keyboard_arrow_up,
-              color: Colors.white,
-            ),
+              FloatingActionButtonLocation.endFloat,
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FloatingActionButton(onPressed: (){
+                  MyMapController.move(LatLng(myCurrentPosition.latitude,
+                    myCurrentPosition.longitude), 10.0);
+                },child: Icon(Icons.location_history, color: Colors.white,),),
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  if (1==2) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        content: Text(
+                          'Enter Name To Start Carrying the Beacon',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ),
+                    );
+                  } else {
+                    myBottomSheetCarrierScreen(
+                        context,
+                        controller.text,
+                        myCurrentPosition.latitude,
+                        myCurrentPosition.longitude,
+                        MyMapController,
+                        dropdownValue);
+                  }
+                },
+                child: Icon(
+                  Icons.keyboard_arrow_up,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
         ),
       ),

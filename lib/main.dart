@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import './provider/currentfollowingBeacon_provider.dart';
 import './provider/darkModeNotifier.dart';
 import 'Mythemes.dart';
+import './provider/name_provider.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -14,6 +15,8 @@ void main() {
         ChangeNotifierProvider(create: (context) => CurrentCarrier()),
         ChangeNotifierProvider(create: (context) => CurrentFollowing()),
         ChangeNotifierProvider(create: (context) => DarkNotifier()),
+        ChangeNotifierProvider(create: (context) => NameNotifier()),
+
       ],
       child: MyApp()),);
 }

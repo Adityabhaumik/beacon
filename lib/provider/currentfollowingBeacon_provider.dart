@@ -4,18 +4,34 @@ import 'package:latlong/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/followerModel.dart';
+import '../model/destination_model.dart';
 
 class CurrentFollowing with ChangeNotifier {
   followerDataModel nowFollowing = followerDataModel();
-
+  DestinationDataModel destination=DestinationDataModel();
   void update(String current, MapController controller) {
+    FirebaseFirestore.instance
+        .collection('Carriers/${current}/destination')
+        .get().then((event) {
+      if (event.docs.isEmpty) {
+        destination.destinationName = '';
+        destination.lat = 00.0000;
+        destination.lon = 00.0000;
+      }
+      destination.destinationName = event.docs[0]['destinationName'];
+      destination.lat = event.docs[0]['destLat'];
+      destination.lon = event.docs[0]['destLon'];
+      print("${destination.destinationName} this one");
+      notifyListeners();
+    });
+    // carrier location data
     FirebaseFirestore.instance
         .collection('Carriers/${current}/loc')
         .orderBy('createdAt', descending: true)
         .snapshots()
         .listen((event) {
       if (event.docs.isEmpty) {
-        nowFollowing.name = 'Error May be Wrong Code';
+        nowFollowing.name = '_';
         nowFollowing.lat = 90.0000;
         nowFollowing.lon = 135.0000;
       }
