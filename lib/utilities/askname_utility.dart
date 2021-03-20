@@ -8,8 +8,18 @@ AlertBoxAskName(BuildContext context) {
   var Nameprovider = Provider.of<NameNotifier>(context);
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.start,
     children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(top:10.0),
+        child: Text(
+          'WELCOME 🙌',
+          style: Theme.of(context).textTheme.headline2,
+        ),
+      ),
+      SizedBox(
+        height: MediaQuery.of(context).size.height*0.18,
+      ),
       Container(
         child: TextFormField(
           controller: controller,

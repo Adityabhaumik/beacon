@@ -29,8 +29,9 @@ Widget buildFloatingSearchBar(BuildContext context, MapController controller) {
   }
 
   return FloatingSearchBar(
+    automaticallyImplyBackButton: false,
     textInputAction: TextInputAction.done,
-    queryStyle: TextStyle(color: Colors.black),
+    queryStyle: TextStyle(color: Theme.of(context).secondaryHeaderColor),
     hint: destinationData.destinationName == null
         ? 'Enter Destination'
         : destinationData.destinationName,
@@ -45,12 +46,9 @@ Widget buildFloatingSearchBar(BuildContext context, MapController controller) {
     onSubmitted: (value) {
       print(value);
       getDestination(value);
+
     },
-    // onQueryChanged: (query) {
-    //
-    // },
-    // Specify a custom transition to be used for
-    // animating between opened and closed stated.
+
     transition: CircularFloatingSearchBarTransition(),
     actions: [
       FloatingSearchBarAction(
