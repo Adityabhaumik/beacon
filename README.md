@@ -1,5 +1,5 @@
 > # Gretel
-![appstore](https://user-images.githubusercontent.com/52599836/111898112-00c42680-8a4a-11eb-8ce5-699cd659319c.png)
+![ic_launcher](https://user-images.githubusercontent.com/52599836/111898133-205b4f00-8a4a-11eb-8bf8-7f267b2d1510.png)
 
 
 ### Problem Statement
