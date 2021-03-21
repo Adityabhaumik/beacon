@@ -190,9 +190,11 @@ class _CarryBeaconState extends State<CarryBeacon> {
                               ),
                               layers: [
                                 TileLayerOptions(
-                                  urlTemplate:
-                                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                  subdomains: ['a', 'b', 'c'],
+                                  urlTemplate:"https://api.mapbox.com/styles/v1/compileadi/ckmith0h51sji17qv1ejg6jnr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja2JlbXR5NTUwbjFqMnNxZXRrOXlienRiIn0.QLO2Ma7PvpNPpdSGM6I4lQ", additionalOptions: {
+                                    'accessToken':
+                                    'pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja21pc2htY2Qwa2MxMnBzMTViaDNvODZmIn0.4zbZKwEfVQ9VZ13GTZp3iw',
+                                    'id': 'mapbox.mapbox-streets-v8'
+                                  },
                                 ),
                                 MarkerLayerOptions(markers: mymarkers)
                               ],

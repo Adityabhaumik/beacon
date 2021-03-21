@@ -55,14 +55,11 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
       myCurrentPosition = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       myMapController.move(
-          LatLng(
-              myCurrentPosition.latitude, myCurrentPosition.longitude),
+          LatLng(myCurrentPosition.latitude, myCurrentPosition.longitude),
           10.0);
 
-
-        addMarker(myCurrentPosition.latitude, myCurrentPosition.longitude,
-            Colors.orangeAccent);
-
+      addMarker(myCurrentPosition.latitude, myCurrentPosition.longitude,
+          Colors.orangeAccent);
     }
 
     setState(() {
@@ -86,7 +83,6 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
         iconTheme: IconThemeData(color: Theme.of(context).secondaryHeaderColor),
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
-
       ),
       body: Center(
         child: Column(
@@ -103,9 +99,12 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
                   ),
                   layers: [
                     TileLayerOptions(
-                        urlTemplate:
-                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                        subdomains: ['a', 'b', 'c']),
+                      urlTemplate:"https://api.mapbox.com/styles/v1/compileadi/ckmith0h51sji17qv1ejg6jnr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja2JlbXR5NTUwbjFqMnNxZXRrOXlienRiIn0.QLO2Ma7PvpNPpdSGM6I4lQ", additionalOptions: {
+                      'accessToken':
+                      'pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja21pc2htY2Qwa2MxMnBzMTViaDNvODZmIn0.4zbZKwEfVQ9VZ13GTZp3iw',
+                      'id': 'mapbox.mapbox-streets-v8'
+                    },
+                    ),
                     MarkerLayerOptions(markers: mymarkers)
                   ],
                 ),
@@ -123,15 +122,15 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
             child: FloatingActionButton(
               elevation: 0.0,
               onPressed: () {
-                try{
+                try {
                   myMapController.move(
                       LatLng(
                         currentCarrierData.nowFollowing.lat,
-                        currentCarrierData.nowFollowing.lon,),
+                        currentCarrierData.nowFollowing.lon,
+                      ),
                       10.0);
-                }catch(e){}
-
-                },
+                } catch (e) {}
+              },
               child: Icon(
                 Icons.attribution_outlined,
                 color: Colors.white,
@@ -144,7 +143,6 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
               elevation: 0.0,
               onPressed: () {
                 getLocation();
-
               },
               child: Icon(
                 Icons.location_history,
