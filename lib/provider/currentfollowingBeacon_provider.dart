@@ -8,11 +8,14 @@ import '../model/destination_model.dart';
 
 class CurrentFollowing with ChangeNotifier {
   followerDataModel nowFollowing = followerDataModel();
-  DestinationDataModel destination=DestinationDataModel();
+  DestinationDataModel destination = DestinationDataModel();
+  double isLatChannged = 90.0000;
+
   void update(String current, MapController controller) {
     FirebaseFirestore.instance
         .collection('Carriers/${current}/destination')
-        .get().then((event) {
+        .get()
+        .then((event) {
       if (event.docs.isEmpty) {
         destination.destinationName = '';
         destination.lat = 00.0000;
@@ -21,7 +24,7 @@ class CurrentFollowing with ChangeNotifier {
       destination.destinationName = event.docs[0]['destinationName'];
       destination.lat = event.docs[0]['destLat'];
       destination.lon = event.docs[0]['destLon'];
-      print("${destination.destinationName} this one");
+      //print("${destination.destinationName} this one");
       notifyListeners();
     });
     // carrier location data
@@ -38,19 +41,21 @@ class CurrentFollowing with ChangeNotifier {
       nowFollowing.name = event.docs[0]['name'];
       nowFollowing.lat = event.docs[0]['lat'];
       nowFollowing.lon = event.docs[0]['lon'];
-      print("${nowFollowing.name} this one");
+      //print("${nowFollowing.name} this one");
+
       try {
-        controller.move(LatLng(nowFollowing.lat, nowFollowing.lon), 15.0);
+        if (isLatChannged != nowFollowing.lat) {
+          print("this many time have been called");
+          isLatChannged = nowFollowing.lat;
+          controller.move(LatLng(nowFollowing.lat, nowFollowing.lon), 15.0);
+          notifyListeners();
+        }
 
         // mymarker.markers.first.point.latitude = nowFollowing.lat;
         // mymarker.markers.first.point.longitude = nowFollowing.lon;
-        notifyListeners();
 
         // print(mymarker.markers[0].point.longitude);
       } catch (e) {}
     });
   }
-
-
-
 }

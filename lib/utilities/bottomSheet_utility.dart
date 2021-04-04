@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
+import 'package:provider/provider.dart';
+
+import 'package:flutter/cupertino.dart';
+
+import '../provider/currentfollowingBeacon_provider.dart';
+
+
+
 
 Future<void> myBottomSheet(
     BuildContext context,
-    String currentCarrier,
-    double lat,
-    double lon,
-    String destination,
-    double destinationLat,
-    double destinationLon,
+
 ) {
   return showModalBottomSheet<void>(
     shape: RoundedRectangleBorder(
@@ -20,6 +21,15 @@ Future<void> myBottomSheet(
     ),
     context: context,
     builder: (BuildContext context) {
+      final currentCarrierData = Provider.of<CurrentFollowing>(context);
+      // currentCarrierData.nowFollowing.name,
+      // currentCarrierData.nowFollowing.lat,
+      // currentCarrierData.nowFollowing.lon,
+      // currentCarrierData.destination.destinationName,
+      // currentCarrierData.destination.lat,
+      // currentCarrierData.destination.lon,
+
+
       return Container(
         padding: EdgeInsets.only(left: 20, top: 30, bottom: 30),
         child: Column(
@@ -29,28 +39,28 @@ Future<void> myBottomSheet(
           children: <Widget>[
 
                 Text(
-                  'Destination :${destination}',
+                  'Destination :${currentCarrierData.destination.destinationName}',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
 
             Text(
-              'Destination Lattitude :${destinationLat}',
+              'Destination Lattitude :${currentCarrierData.destination.lat}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             Text(
-              'Destination Longitude :${destinationLon}',
+              'Destination Longitude :${currentCarrierData.destination.lon}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             Text(
-              'Beacon Carrier :${currentCarrier}',
+              'Beacon Carrier :${currentCarrierData.nowFollowing.name}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             Text(
-              'Beacon Carrier Lattitude :${lat}',
+              'Beacon Carrier Lattitude :${currentCarrierData.nowFollowing.lat}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             Text(
-              'Beacon Carrier Longitude :${lon}',
+              'Beacon Carrier Longitude :${currentCarrierData.nowFollowing.lon}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ],

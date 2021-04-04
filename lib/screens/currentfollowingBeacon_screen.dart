@@ -18,49 +18,51 @@ class CurrentfollowingBeacon extends StatefulWidget {
 }
 
 class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
-  @override
-  Widget build(BuildContext context) {
-    MapController myMapController = MapController();
-    List<Marker> mymarkers = [
+  MapController myMapController = MapController();
+  Position myCurrentPosition;
+  List<Marker> mymarkers = [
+    Marker(
+      anchorPos: AnchorPos.align(AnchorAlign.center),
+      height: 30,
+      width: 30,
+      point: LatLng(90.0000, 135.0000),
+      builder: (ctx) => Icon(Icons.location_pin, color: Colors.orangeAccent),
+    ),
+  ];
+
+  addMarker(double lat, double lon, Color iconColor) {
+    mymarkers.add(
       Marker(
         anchorPos: AnchorPos.align(AnchorAlign.center),
         height: 30,
         width: 30,
-        point: LatLng(90.0000, 135.0000),
-        builder: (ctx) => Icon(Icons.location_pin, color: Colors.orangeAccent),
+        point: LatLng(lat, lon),
+        builder: (ctx) => Icon(Icons.location_pin, color: iconColor),
       ),
-    ];
+    );
+  }
+
+  Future<void> getlocation() async{
+    await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high).then((value) {
+      myCurrentPosition=value;
+      addMarker(myCurrentPosition.latitude,
+          myCurrentPosition.longitude, Colors.red);
+    });
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
     final current = ModalRoute.of(context).settings.arguments as String;
     final currentCarrierData = Provider.of<CurrentFollowing>(context);
-    final DestinationData = Provider.of<CurrentFollowing>(context).destination;
-    Position myCurrentPosition = null;
+
+
     currentCarrierData.update(
       current,
       myMapController,
     );
-
-    addMarker(double lat, double lon, Color iconColor) {
-      mymarkers.add(
-        Marker(
-          anchorPos: AnchorPos.align(AnchorAlign.center),
-          height: 30,
-          width: 30,
-          point: LatLng(lat, lon),
-          builder: (ctx) => Icon(Icons.location_pin, color: iconColor),
-        ),
-      );
-    }
-
-    void getLocation() async {
-      myCurrentPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      myMapController.move(
-          LatLng(myCurrentPosition.latitude, myCurrentPosition.longitude),
-          10.0);
-
-      addMarker(myCurrentPosition.latitude, myCurrentPosition.longitude,
-          Colors.orangeAccent);
-    }
 
     setState(() {
       try {
@@ -99,11 +101,13 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
                   ),
                   layers: [
                     TileLayerOptions(
-                      urlTemplate:"https://api.mapbox.com/styles/v1/compileadi/ckmith0h51sji17qv1ejg6jnr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja2JlbXR5NTUwbjFqMnNxZXRrOXlienRiIn0.QLO2Ma7PvpNPpdSGM6I4lQ", additionalOptions: {
-                      'accessToken':
-                      'pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja21pc2htY2Qwa2MxMnBzMTViaDNvODZmIn0.4zbZKwEfVQ9VZ13GTZp3iw',
-                      'id': 'mapbox.mapbox-streets-v8'
-                    },
+                      urlTemplate:
+                          "https://api.mapbox.com/styles/v1/compileadi/ckmith0h51sji17qv1ejg6jnr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja2JlbXR5NTUwbjFqMnNxZXRrOXlienRiIn0.QLO2Ma7PvpNPpdSGM6I4lQ",
+                      additionalOptions: {
+                        'accessToken':
+                            'pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja21pc2htY2Qwa2MxMnBzMTViaDNvODZmIn0.4zbZKwEfVQ9VZ13GTZp3iw',
+                        'id': 'mapbox.mapbox-streets-v8'
+                      },
                     ),
                     MarkerLayerOptions(markers: mymarkers)
                   ],
@@ -123,12 +127,12 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
               elevation: 0.0,
               onPressed: () {
                 try {
-                  myMapController.move(
-                      LatLng(
-                        currentCarrierData.nowFollowing.lat,
-                        currentCarrierData.nowFollowing.lon,
-                      ),
-                      10.0);
+                  myMapController.onReady.then((result) {
+                    myMapController.move(
+                        LatLng(currentCarrierData.nowFollowing.lat,
+                            currentCarrierData.nowFollowing.lon),
+                        15.0);
+                  });
                 } catch (e) {}
               },
               child: Icon(
@@ -141,8 +145,14 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
             padding: const EdgeInsets.all(8.0),
             child: FloatingActionButton(
               elevation: 0.0,
-              onPressed: () {
-                getLocation();
+              onPressed: () async {
+                await getlocation();
+                print("${myMapController} this one");
+                myMapController.move(
+                    LatLng(myCurrentPosition.latitude,
+                        myCurrentPosition.longitude),
+                    15.0);
+
               },
               child: Icon(
                 Icons.location_history,
@@ -158,20 +168,9 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
               size: 35,
             ),
             onPressed: () {
-              try {
-                myBottomSheet(
-                  context,
-                  currentCarrierData.nowFollowing.name,
-                  currentCarrierData.nowFollowing.lat,
-                  currentCarrierData.nowFollowing.lon,
-                  currentCarrierData.destination.destinationName,
-                  currentCarrierData.destination.lat,
-                  currentCarrierData.destination.lon,
-                );
-              } catch (e) {
-                myBottomSheet(
-                    context, "", 12.972442, 77.580643, "", 0.00, 0.00);
-              }
+              myBottomSheet(
+                context,
+              );
             },
           ),
         ],

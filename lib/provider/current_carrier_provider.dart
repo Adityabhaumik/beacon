@@ -14,7 +14,7 @@ class CurrentCarrier with ChangeNotifier {
   DestinationDataModel _currentDestination = DestinationDataModel();
   bool isCarrying = false;
   Timer t;
-
+  Position myCurrentPosition;
   CurrentCarrierDataModel get current_carriers {
     return _current;
   }
@@ -53,9 +53,9 @@ class CurrentCarrier with ChangeNotifier {
     notifyListeners();
   }
 
-  void startTimer(int hour, MapController c) {
+  void startTimer(int hour, MapController c, ) {
     int _counter = 3600 * hour;
-    Position myCurrentPosition;
+
     FirebaseFirestore.instance
         .collection('Carriers')
         .doc('${_current.id}')
@@ -65,14 +65,15 @@ class CurrentCarrier with ChangeNotifier {
       'destLat': _currentDestination.lat,
       'destLon': _currentDestination.lon
     });
-    t = Timer.periodic(Duration(seconds: 60), (_) async {
+    t = Timer.periodic(Duration(seconds: 30), (_) async {
       if (_counter > 0) {
-        _counter = _counter - 60;
+        _counter = _counter - 30;
         print(_counter);
         myCurrentPosition = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high);
         c.move(LatLng(myCurrentPosition.latitude, myCurrentPosition.longitude),
             15.0);
+
         FirebaseFirestore.instance
             .collection('Carriers')
             .doc('${_current.id}')
@@ -83,7 +84,8 @@ class CurrentCarrier with ChangeNotifier {
           'lon': myCurrentPosition.longitude,
           'createdAt': DateTime.now()
         });
-        print("${myCurrentPosition.latitude}I working");
+        notifyListeners();
+        // print("${myCurrentPosition.latitude}I working");
       } else {
         print("Time Ses");
         t.cancel();

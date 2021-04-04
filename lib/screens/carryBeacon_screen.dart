@@ -28,8 +28,7 @@ class _CarryBeaconState extends State<CarryBeacon> {
   void getLocation() async {
     myCurrentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    updateMarkers(myCurrentPosition.latitude, myCurrentPosition.longitude,
-        Colors.orangeAccent);
+
     setState(() {
       positionLoaded = true;
     });
@@ -57,20 +56,32 @@ class _CarryBeaconState extends State<CarryBeacon> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final CurrentCarrierData = Provider.of<CurrentCarrier>(context);
     final CurrentCarrierNameId = CurrentCarrierData.current_carriers;
     final Destinationdata = CurrentCarrierData.destinationData;
-
+    if (CurrentCarrierData.myCurrentPosition != null) {
+      myCurrentPosition = CurrentCarrierData.myCurrentPosition;
+    }
+    print("this is the value ${myCurrentPosition}");
     setState(() {
-      try{
-        updateMarkers(Destinationdata.lat, Destinationdata.lon, Colors.greenAccent);
-      }catch(e){}
-
+      try {
+        updateMarkers(
+            Destinationdata.lat, Destinationdata.lon, Colors.greenAccent);
+      } catch (e) {}
     });
 
+    ///the update marker on postion changed one
+    setState(() {
+      print("Hey I was called");
+      try {
+        updateMarkers(myCurrentPosition.latitude, myCurrentPosition.longitude,
+            Colors.orangeAccent);
+      } catch (e) {
+        print(e);
+      }
+    });
     Future<bool> alertBoxOnWillPopCarrier() {
       return showDialog(
             context: context,
@@ -190,9 +201,11 @@ class _CarryBeaconState extends State<CarryBeacon> {
                               ),
                               layers: [
                                 TileLayerOptions(
-                                  urlTemplate:"https://api.mapbox.com/styles/v1/compileadi/ckmith0h51sji17qv1ejg6jnr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja2JlbXR5NTUwbjFqMnNxZXRrOXlienRiIn0.QLO2Ma7PvpNPpdSGM6I4lQ", additionalOptions: {
+                                  urlTemplate:
+                                      "https://api.mapbox.com/styles/v1/compileadi/ckmith0h51sji17qv1ejg6jnr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja2JlbXR5NTUwbjFqMnNxZXRrOXlienRiIn0.QLO2Ma7PvpNPpdSGM6I4lQ",
+                                  additionalOptions: {
                                     'accessToken':
-                                    'pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja21pc2htY2Qwa2MxMnBzMTViaDNvODZmIn0.4zbZKwEfVQ9VZ13GTZp3iw',
+                                        'pk.eyJ1IjoiY29tcGlsZWFkaSIsImEiOiJja21pc2htY2Qwa2MxMnBzMTViaDNvODZmIn0.4zbZKwEfVQ9VZ13GTZp3iw',
                                     'id': 'mapbox.mapbox-streets-v8'
                                   },
                                 ),
@@ -202,42 +215,37 @@ class _CarryBeaconState extends State<CarryBeacon> {
                           ))
                 ],
               ),
-              buildFloatingSearchBar(context,MyMapController)
+              buildFloatingSearchBar(context, MyMapController)
             ],
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.endFloat,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           floatingActionButton: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: FloatingActionButton(onPressed: (){
-                  MyMapController.move(LatLng(myCurrentPosition.latitude,
-                    myCurrentPosition.longitude), 10.0);
-                },child: Icon(Icons.location_history, color: Colors.white,),),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    MyMapController.move(
+                        LatLng(myCurrentPosition.latitude,
+                            myCurrentPosition.longitude),
+                        10.0);
+                  },
+                  child: Icon(
+                    Icons.location_history,
+                    color: Colors.white,
+                  ),
+                ),
               ),
               FloatingActionButton(
                 onPressed: () {
-                  if (1==2) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        content: Text(
-                          'Enter Name To Start Carrying the Beacon',
-                          style: Theme.of(context).textTheme.subtitle2,
-                        ),
-                      ),
-                    );
-                  } else {
-                    myBottomSheetCarrierScreen(
-                        context,
-                        controller.text,
-                        myCurrentPosition.latitude,
-                        myCurrentPosition.longitude,
-                        MyMapController,
-                        dropdownValue);
-                  }
+                  myBottomSheetCarrierScreen(
+                      context,
+                      controller.text,
+                      myCurrentPosition.latitude,
+                      myCurrentPosition.longitude,
+                      MyMapController,
+                      dropdownValue);
                 },
                 child: Icon(
                   Icons.keyboard_arrow_up,
