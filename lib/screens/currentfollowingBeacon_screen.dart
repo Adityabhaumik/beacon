@@ -30,14 +30,14 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
     ),
   ];
 
-  addMarker(double lat, double lon, Color iconColor) {
+  addMarker(double lat, double lon, Color iconColor,IconData pirticularIcon) {
     mymarkers.add(
       Marker(
         anchorPos: AnchorPos.align(AnchorAlign.center),
         height: 30,
         width: 30,
         point: LatLng(lat, lon),
-        builder: (ctx) => Icon(Icons.location_pin, color: iconColor),
+        builder: (ctx) => Icon(pirticularIcon, color: iconColor),
       ),
     );
   }
@@ -47,7 +47,7 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
         desiredAccuracy: LocationAccuracy.high).then((value) {
       myCurrentPosition=value;
       addMarker(myCurrentPosition.latitude,
-          myCurrentPosition.longitude, Colors.red);
+          myCurrentPosition.longitude, Colors.red,Icons.location_pin);
     });
 
   }
@@ -67,11 +67,11 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
     setState(() {
       try {
         addMarker(currentCarrierData.destination.lat,
-            currentCarrierData.destination.lon, Colors.greenAccent);
+            currentCarrierData.destination.lon, Colors.red,Icons.flag_outlined);
       } catch (_) {}
       try {
         addMarker(currentCarrierData.nowFollowing.lat,
-            currentCarrierData.nowFollowing.lon, Colors.cyan);
+            currentCarrierData.nowFollowing.lon, Colors.cyan,Icons.location_pin);
       } catch (_) {}
     });
 
@@ -85,6 +85,12 @@ class _CurrentfollowingBeaconState extends State<CurrentfollowingBeacon> {
         iconTheme: IconThemeData(color: Theme.of(context).secondaryHeaderColor),
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.adjust_rounded,color: currentCarrierData.beingCarried?Colors.green:Colors.redAccent,),
+          )
+        ],
       ),
       body: Center(
         child: Column(

@@ -15,9 +15,11 @@ class CurrentCarrier with ChangeNotifier {
   bool isCarrying = false;
   Timer t;
   Position myCurrentPosition;
+
   CurrentCarrierDataModel get current_carriers {
     return _current;
   }
+
   DestinationDataModel get destinationData {
     return _currentDestination;
   }
@@ -26,14 +28,30 @@ class CurrentCarrier with ChangeNotifier {
     return isCarrying;
   }
 
-  void updateDestination(String newDestinationName,double lat,double lon){
-    _currentDestination.destinationName=newDestinationName;
-    _currentDestination.lat=lat;
-    _currentDestination.lon=lon;
+  void updateDestination(String newDestinationName, double lat, double lon) {
+    _currentDestination.destinationName = newDestinationName;
+    _currentDestination.lat = lat;
+    _currentDestination.lon = lon;
     notifyListeners();
-
   }
-  void ClearCarrier() {
+
+  void sendEndDoc() {
+    FirebaseFirestore.instance
+        .collection('Carriers')
+        .doc('${_current.id}')
+        .collection('loc')
+        .add({
+      'name': _current.name,
+      'lat': myCurrentPosition.latitude,
+      'lon': myCurrentPosition.longitude,
+      'carrying': false,
+      'createdAt': DateTime.now()
+    });
+  }
+
+  void ClearCarrier()  {
+    print('clearData called');
+    sendEndDoc();
     _current.name = "";
     _current.id = "";
     isCarrying = false;
@@ -41,6 +59,7 @@ class CurrentCarrier with ChangeNotifier {
     print(_current.id);
     t.cancel();
     notifyListeners();
+
   }
 
   void updateCarrier(String name) {
@@ -49,11 +68,13 @@ class CurrentCarrier with ChangeNotifier {
     isCarrying = true;
     print(_current.name);
     print(_current.id);
-
     notifyListeners();
   }
 
-  void startTimer(int hour, MapController c, ) {
+  void startTimer(
+    int hour,
+    MapController c,
+  ) {
     int _counter = 3600 * hour;
 
     FirebaseFirestore.instance
@@ -63,7 +84,7 @@ class CurrentCarrier with ChangeNotifier {
         .add({
       'destinationName': _currentDestination.destinationName,
       'destLat': _currentDestination.lat,
-      'destLon': _currentDestination.lon
+      'destLon': _currentDestination.lon,
     });
     t = Timer.periodic(Duration(seconds: 30), (_) async {
       if (_counter > 0) {
@@ -82,14 +103,17 @@ class CurrentCarrier with ChangeNotifier {
           'name': _current.name,
           'lat': myCurrentPosition.latitude,
           'lon': myCurrentPosition.longitude,
+          'carrying': true,
           'createdAt': DateTime.now()
         });
         notifyListeners();
         // print("${myCurrentPosition.latitude}I working");
       } else {
-        print("Time Ses");
-        t.cancel();
-        isCarrying = false;
+        ClearCarrier();
+        // print("Time Ses");
+        // t.cancel();
+        // isCarrying = false;
+
         notifyListeners();
       }
     });

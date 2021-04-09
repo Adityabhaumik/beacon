@@ -37,6 +37,7 @@ dependencies:
   material_floating_search_bar: ^0.3.3
   geocoder: ^0.2.1
   share: ^2.0.1
+  firebase_dynamic_links: ^0.8.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

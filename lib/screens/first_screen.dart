@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../provider/name_provider.dart';
 import '../utilities/askname_utility.dart';
-
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import '../screens/currentfollowingBeacon_screen.dart';
 class FirstScreen extends StatefulWidget {
   static const id = "FirstScreen";
 
@@ -18,12 +19,41 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   void initState() {
     initializeFirebase();
-
+    initDynamicLinks();
     super.initState();
   }
 
   void initializeFirebase() async {
     await Firebase.initializeApp();
+  }
+
+
+  void initDynamicLinks() async {
+    print("initDynamicLinks");
+    FirebaseDynamicLinks.instance.onLink(
+        onSuccess: (PendingDynamicLinkData dynamicLink) async {
+          final Uri deepLink = dynamicLink?.link;
+
+          if (deepLink != null) {
+            // Navigator.pushNamed(context, CurrentfollowingBeacon.id,
+            //      arguments: deepLink.queryParameters['id']);
+            print("${deepLink.queryParameters['id']}");
+          }
+        },
+        onError: (OnLinkErrorException e) async {
+          print('onLinkError');
+          print(e.message);
+        }
+    );
+
+    final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+    final Uri deepLink = data?.link;
+
+    if (deepLink != null) {
+      print("${deepLink.queryParameters["id"]}");
+      Navigator.pushNamed(context, CurrentfollowingBeacon.id,
+          arguments: deepLink.queryParameters["id"]);
+    }
   }
 
   @override

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "767721584814",
+    "project_id": "beaconv2-633aa",
+    "storage_bucket": "beaconv2-633aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767721584814:android:5be7d30a49ff1d12ff553f",
+        "android_client_info": {
+          "package_name": "com.aditya.beacon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767721584814-3us48h0f955bhkl2pkceqrujnsmurquj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aditya.beacon",
+            "certificate_hash": "5c2e8cbf5ea740dc8b06adfc98766d42b92e4c87"
+          }
+        },
+        {
+          "client_id": "767721584814-mcjkj2mi48831pphs7c9hdd1cglt4sac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2lqh2tuG6TmuN3PhuAuf3kWLZWit1J_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767721584814-mcjkj2mi48831pphs7c9hdd1cglt4sac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
